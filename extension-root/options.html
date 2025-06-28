@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n="settingsTitle">LessAddicted Settings</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #1da1f2;
+      margin: 0;
+    }
+    .language-switcher {
+      display: flex;
+      gap: 10px;
+    }
+    .language-switcher button {
+      padding: 5px 10px;
+      border: 1px solid #e5e7eb;
+      background-color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .language-switcher button.active {
+      background-color: #1da1f2;
+      color: white;
+      border-color: #1da1f2;
+    }
+    .status {
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 5px;
+      background-color: #e8f5fe;
+      display: none;
+    }
+    .current-list {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #f0f9ff;
+      border-radius: 5px;
+      border-left: 4px solid #1da1f2;
+    }
+    button {
+      background-color: #1da1f2;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #1a91da;
+    }
+    button:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+    .instructions {
+      margin: 20px 0;
+      padding: 20px;
+      background-color: #fffbeb;
+      border: 1px solid #fbbf24;
+      border-radius: 5px;
+    }
+    .instructions h3 {
+      margin-top: 0;
+      color: #92400e;
+    }
+    .instructions ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    .instructions li {
+      margin: 5px 0;
+    }
+    .disclaimer {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #f3f4f6;
+      border-radius: 5px;
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+    .disclaimer a {
+      color: #1da1f2;
+      text-decoration: none;
+    }
+    .disclaimer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 data-i18n="settingsTitle">LessAddicted Settings</h1>
+      <div class="language-switcher">
+        <button data-lang="en">English</button>
+        <button data-lang="ja">日本語</button>
+      </div>
+    </div>
+    
+    <div class="current-list" id="currentList">
+      <strong data-i18n="currentSetting">現在の設定:</strong> <span id="listName" data-i18n="notSet">未設定</span>
+    </div>
+    
+    <div class="instructions">
+      <h3 data-i18n="howToUse">設定方法:</h3>
+      <ol>
+        <li data-i18n="step1">下の「設定を開始」ボタンをクリックしてください</li>
+        <li data-i18n="step2">X (Twitter) のホームページに移動します</li>
+        <li data-i18n="step3">ページ上部のタブ（For you, Following, カスタムリスト）から、デフォルトに設定したいタブをクリックしてください</li>
+        <li data-i18n="step4">設定が完了すると、自動的に通知が表示されます</li>
+      </ol>
+      <p style="margin-top: 10px; font-size: 14px; color: #6b7280;" data-i18n="note">
+        ※ 「For you」と「Following」は選択できません。カスタムリストのみ設定可能です。
+      </p>
+    </div>
+    
+    <button id="startSetting" data-i18n="startSetup">設定を開始</button>
+    <button id="clearSetting" style="margin-left: 10px; background-color: #dc2626;" data-i18n="clearSettings">設定をクリア</button>
+    
+    <div class="status" id="status"></div>
+    
+    <div class="disclaimer">
+      <span data-i18n="disclaimer">LessAddicted is an unofficial third-party tool for X.com. Its sole purpose is to automate the action of making a list tab your default view. It operates by interacting with the existing user interface and does not involve data collection, content modification, or other activities that would typically fall under Terms of Service restrictions. To verify if it doesn't have any backdoor, check</span> <a href="https://github.com/shogochiai/lessaddicted" target="_blank">https://github.com/shogochiai/lessaddicted</a>
+    </div>
+  </div>
+  
+  <script src="i18n.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

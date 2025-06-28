@@ -1,0 +1,77 @@
+{
+  "extensionName": {
+    "message": "LessAddicted"
+  },
+  "extensionDescription": {
+    "message": "X.comの任意のリストをデフォルト表示にして、より意図的にコンテンツを消費できるようにします"
+  },
+  "settingsTitle": {
+    "message": "LessAddicted 設定"
+  },
+  "currentSetting": {
+    "message": "現在の設定："
+  },
+  "notSet": {
+    "message": "未設定"
+  },
+  "howToUse": {
+    "message": "設定方法："
+  },
+  "step1": {
+    "message": "下の「設定を開始」ボタンをクリックしてください"
+  },
+  "step2": {
+    "message": "X (Twitter) のホームページに移動します"
+  },
+  "step3": {
+    "message": "ページ上部のタブ（For you、Following、カスタムリスト）から、デフォルトに設定したいタブをクリックしてください"
+  },
+  "step4": {
+    "message": "設定が完了すると、自動的に通知が表示されます"
+  },
+  "note": {
+    "message": "※ 「For you」と「Following」は選択できません。カスタムリストのみ設定可能です。"
+  },
+  "startSetup": {
+    "message": "設定を開始"
+  },
+  "clearSettings": {
+    "message": "設定をクリア"
+  },
+  "clearConfirm": {
+    "message": "現在の設定をクリアしますか？"
+  },
+  "settingModeEnabled": {
+    "message": "設定モードが有効になりました。X (Twitter) でリストをクリックしてください。"
+  },
+  "settingsCleared": {
+    "message": "設定がクリアされました"
+  },
+  "newListSet": {
+    "message": "新しいリストが設定されました！"
+  },
+  "settingModeIndicator": {
+    "message": "設定モード: ホーム画面上部のタブをクリックしてください"
+  },
+  "defaultTabSet": {
+    "message": "デフォルトタブが設定されました: {{tabName}}"
+  },
+  "openSettings": {
+    "message": "設定を開く"
+  },
+  "openX": {
+    "message": "Xを開く"
+  },
+  "currentDefaultList": {
+    "message": "現在のデフォルトリスト："
+  },
+  "loading": {
+    "message": "読み込み中..."
+  },
+  "extensionInfo": {
+    "message": "デフォルトリストを設定すると、X (Twitter) を開いた時に自動的にそのリストが表示されます。"
+  },
+  "disclaimer": {
+    "message": "LessAddictedはX.com用の非公式サードパーティツールです。リストタブをデフォルトビューにする操作を自動化することが唯一の目的です。既存のユーザーインターフェースと対話することで動作し、データ収集、コンテンツの変更、または利用規約の制限に該当する他の活動は行いません。バックドアがないことを確認するには、以下をチェックしてください"
+  }
+}

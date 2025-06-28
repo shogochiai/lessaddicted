@@ -1,67 +1,27 @@
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-._*
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Linux
-*~
-.fuse_hidden*
-.directory
-.Trash-*
-
-# Editor directories and files
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-.project
-.settings/
-.classpath
-*.sublime-workspace
-*.sublime-project
-
-# Logs
-logs/
-*.log
-
-# Temporary files
-*.tmp
-*.temp
-.tmp/
-.temp/
-
-# Build outputs
-dist/
-build/
-out/
-
 # Dependencies
 node_modules/
-vendor/
 
-# Environment variables
-.env
-.env.local
-.env.*.local
+# Test coverage
+coverage/
+*.lcov
 
-# Backup files
-*.bak
-*.backup
-*.old
+# Test results
+test-results/
+logs/
+playwright-report/
 
-# Archive files
-*.zip
-*.tar.gz
-*.rar
-*.7z
+# Old backup files
+*-old.*
 
-# Cache
-.cache/
-*.cache
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,77 @@
+{
+  "extensionName": {
+    "message": "LessAddicted"
+  },
+  "extensionDescription": {
+    "message": "Make any X.com list your default view - helping you consume content more intentionally"
+  },
+  "settingsTitle": {
+    "message": "LessAddicted Settings"
+  },
+  "currentSetting": {
+    "message": "Current Setting:"
+  },
+  "notSet": {
+    "message": "Not set"
+  },
+  "howToUse": {
+    "message": "How to Use:"
+  },
+  "step1": {
+    "message": "Click the \"Start Setup\" button below"
+  },
+  "step2": {
+    "message": "You will be redirected to X (Twitter) homepage"
+  },
+  "step3": {
+    "message": "Click on the tab you want to set as default from the top tabs (For you, Following, Custom Lists)"
+  },
+  "step4": {
+    "message": "Setup will complete automatically with a notification"
+  },
+  "note": {
+    "message": "Note: \"For you\" and \"Following\" cannot be selected. Only custom lists can be set."
+  },
+  "startSetup": {
+    "message": "Start Setup"
+  },
+  "clearSettings": {
+    "message": "Clear Settings"
+  },
+  "clearConfirm": {
+    "message": "Clear current settings?"
+  },
+  "settingModeEnabled": {
+    "message": "Setup mode enabled. Click on a list in X (Twitter)."
+  },
+  "settingsCleared": {
+    "message": "Settings cleared"
+  },
+  "newListSet": {
+    "message": "New list has been set!"
+  },
+  "settingModeIndicator": {
+    "message": "Setup Mode: Click on a tab at the top of the home screen"
+  },
+  "defaultTabSet": {
+    "message": "Default tab set to: {{tabName}}"
+  },
+  "openSettings": {
+    "message": "Open Settings"
+  },
+  "openX": {
+    "message": "Open X"
+  },
+  "currentDefaultList": {
+    "message": "Current default list:"
+  },
+  "loading": {
+    "message": "Loading..."
+  },
+  "extensionInfo": {
+    "message": "Default list will be automatically displayed when you open X (Twitter)."
+  },
+  "disclaimer": {
+    "message": "LessAddicted is an unofficial third-party tool for X.com. Its sole purpose is to automate the action of making a list tab your default view. It operates by interacting with the existing user interface and does not involve data collection, content modification, or other activities that would typically fall under Terms of Service restrictions. To verify if it doesn't have any backdoor, check"
+  }
+}

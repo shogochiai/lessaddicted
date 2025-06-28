@@ -1,0 +1,23 @@
+{
+  "name": "customx",
+  "version": "1.0.0",
+  "description": "## 概要 このドキュメントは、X（旧Twitter）で任意のリストをデフォルト表示にするChrome Extensionの開発工程を詳細に解説するものです。ユーザーが選択したリストを自動で表示する機能を備え、パイロットテストが実施できる状態を目指します。開発からテスト、引き継ぎまでをカバーします。",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:e2e": "playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.53.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@types/chrome": "^0.0.327",
+    "jest": "^30.0.3",
+    "jest-environment-jsdom": "^30.0.2",
+    "playwright": "^1.53.1"
+  }
+}
