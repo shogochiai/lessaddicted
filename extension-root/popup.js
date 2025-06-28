@@ -1,49 +1,64 @@
-// DOMが読み込まれたら実行
-document.addEventListener('DOMContentLoaded', () => {
-  // 現在の設定を表示
-  chrome.storage.sync.get(['defaultTabName', 'defaultListName'], (data) => {
+// Language detection and UI text
+const translations = {
+  en: {
+    currentLabel: 'Current default list:',
+    notSet: 'Not set',
+    openSettings: 'Open Settings',
+    openX: 'Open X',
+    infoText: 'Set a default list to automatically display when opening X (Twitter).'
+  },
+  ja: {
+    currentLabel: '現在のデフォルトリスト:',
+    notSet: '未設定',
+    openSettings: '設定を開く',
+    openX: 'Xを開く',
+    infoText: 'デフォルトリストを設定すると、X (Twitter) を開いた時に自動的にそのリストが表示されます。'
+  }
+};
+
+// Get browser language
+function getBrowserLanguage() {
+  const lang = chrome.i18n.getUILanguage();
+  // Check if it starts with 'ja' for Japanese
+  return lang.startsWith('ja') ? 'ja' : 'en';
+}
+
+// Apply translations
+function applyTranslations(lang) {
+  const t = translations[lang] || translations.en;
+  
+  document.getElementById('currentLabel').textContent = t.currentLabel;
+  document.getElementById('openOptions').textContent = t.openSettings;
+  document.getElementById('openX').textContent = t.openX;
+  document.getElementById('infoText').textContent = t.infoText;
+  
+  return t;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Detect language and apply translations
+  const lang = getBrowserLanguage();
+  const t = applyTranslations(lang);
+  
+  // Get current setting
+  chrome.storage.sync.get(['defaultTabName', 'defaultListName'], function(data) {
     const currentListElement = document.getElementById('currentList');
     if (data.defaultTabName) {
       currentListElement.textContent = data.defaultTabName;
     } else if (data.defaultListName) {
-      // 旧バージョンとの互換性
       currentListElement.textContent = data.defaultListName;
     } else {
-      // Chrome i18n APIを直接使用
-      const notSetText = chrome.i18n.getMessage('notSet') || '未設定';
-      currentListElement.textContent = notSetText;
+      currentListElement.textContent = t.notSet;
     }
   });
 
-  // 設定ページを開く
-  const openOptionsBtn = document.getElementById('openOptions');
-  if (openOptionsBtn) {
-    openOptionsBtn.addEventListener('click', () => {
-      chrome.runtime.openOptionsPage();
-    });
-  }
+  // Open settings page
+  document.getElementById('openOptions').addEventListener('click', function() {
+    chrome.runtime.openOptionsPage();
+  });
 
-  // Xを新しいタブで開く
-  const openXBtn = document.getElementById('openX');
-  if (openXBtn) {
-    openXBtn.addEventListener('click', () => {
-      chrome.tabs.create({ url: 'https://x.com/home' });
-    });
-  }
-  
-  // data-i18n属性を持つ要素のテキストを更新
-  document.querySelectorAll('[data-i18n]').forEach(element => {
-    const messageKey = element.getAttribute('data-i18n');
-    const message = chrome.i18n.getMessage(messageKey);
-    if (message) {
-      if (element.tagName === 'INPUT' || element.tagName === 'BUTTON') {
-        element.value = message;
-      } else {
-        // currentListは特別扱い（データが読み込まれるまで維持）
-        if (element.id !== 'currentList') {
-          element.textContent = message;
-        }
-      }
-    }
+  // Open X in new tab
+  document.getElementById('openX').addEventListener('click', function() {
+    chrome.tabs.create({ url: 'https://x.com/home' });
   });
 });

@@ -54,7 +54,14 @@
     "message": "Setup Mode: Click on a tab at the top of the home screen"
   },
   "defaultTabSet": {
-    "message": "Default tab set to: {{tabName}}"
+    "message": "Default tab set to: $1",
+    "description": "Message shown when a tab is set as default",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "My List"
+      }
+    }
   },
   "openSettings": {
     "message": "Open Settings"

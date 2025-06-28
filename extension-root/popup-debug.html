@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>LessAddicted</title>
@@ -60,13 +60,18 @@
       margin-top: 15px;
       line-height: 1.4;
     }
+    .debug {
+      font-size: 10px;
+      color: red;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <h1>LessAddicted</h1>
   
   <div class="current-setting">
-    <strong id="currentLabel">Current default list:</strong>
+    <strong>Current default list:</strong>
     <span id="currentList">Loading...</span>
   </div>
   
@@ -75,10 +80,50 @@
     <button id="openX" class="secondary">Open X</button>
   </div>
   
-  <p class="info" id="infoText">
+  <p class="info">
     Set a default list to automatically display when opening X (Twitter).
   </p>
   
-  <script src="popup.js"></script>
+  <div id="debug" class="debug"></div>
+  
+  <script>
+    // Simple debug version without i18n
+    const debug = document.getElementById('debug');
+    debug.textContent = 'Script loaded';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      debug.textContent += ' | DOM loaded';
+      
+      // Test chrome API availability
+      if (typeof chrome === 'undefined') {
+        debug.textContent += ' | Chrome API not available';
+        return;
+      }
+      
+      // Get current setting
+      chrome.storage.sync.get(['defaultTabName', 'defaultListName'], (data) => {
+        debug.textContent += ' | Storage read';
+        const currentListElement = document.getElementById('currentList');
+        if (data.defaultTabName) {
+          currentListElement.textContent = data.defaultTabName;
+        } else if (data.defaultListName) {
+          currentListElement.textContent = data.defaultListName;
+        } else {
+          currentListElement.textContent = 'Not set';
+        }
+      });
+      
+      // Set up buttons
+      document.getElementById('openOptions').addEventListener('click', () => {
+        debug.textContent += ' | Options clicked';
+        chrome.runtime.openOptionsPage();
+      });
+      
+      document.getElementById('openX').addEventListener('click', () => {
+        debug.textContent += ' | X clicked';
+        chrome.tabs.create({ url: 'https://x.com/home' });
+      });
+    });
+  </script>
 </body>
 </html>

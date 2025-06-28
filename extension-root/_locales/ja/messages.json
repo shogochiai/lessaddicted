@@ -54,7 +54,14 @@
     "message": "設定モード: ホーム画面上部のタブをクリックしてください"
   },
   "defaultTabSet": {
-    "message": "デフォルトタブが設定されました: {{tabName}}"
+    "message": "デフォルトタブが設定されました: $1",
+    "description": "タブがデフォルトとして設定されたときに表示されるメッセージ",
+    "placeholders": {
+      "1": {
+        "content": "$1",
+        "example": "マイリスト"
+      }
+    }
   },
   "openSettings": {
     "message": "設定を開く"

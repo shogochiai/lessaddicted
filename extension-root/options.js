@@ -1,4 +1,4 @@
-// i18n ヘルパー関数
+// i18n helper function
 function getMessage(key) {
   if (window.i18n && window.i18n.getMessage) {
     return i18n.getMessage(key);
@@ -7,14 +7,14 @@ function getMessage(key) {
   }
 }
 
-// 現在の設定を表示
+// Display current settings
 function displayCurrentSetting() {
   chrome.storage.sync.get(['defaultTabName', 'defaultListName'], (data) => {
     const listNameElement = document.getElementById('listName');
     if (data.defaultTabName) {
       listNameElement.textContent = data.defaultTabName;
     } else if (data.defaultListName) {
-      // 旧バージョンとの互換性
+      // Backward compatibility
       listNameElement.textContent = data.defaultListName;
     } else {
       listNameElement.textContent = getMessage('notSet') || '未設定';
@@ -22,7 +22,7 @@ function displayCurrentSetting() {
   });
 }
 
-// ステータスメッセージを表示
+// Show status message
 function showStatus(messageKey, isError = false) {
   const statusElement = document.getElementById('status');
   statusElement.textContent = getMessage(messageKey);
@@ -35,23 +35,23 @@ function showStatus(messageKey, isError = false) {
   }, 3000);
 }
 
-// DOMが読み込まれたら実行
+// Execute when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  // 現在の設定を表示
+  // Display current settings
   displayCurrentSetting();
   
-  // 設定開始ボタンのクリックイベント
+  // Start setting button click event
   document.getElementById('startSetting').addEventListener('click', () => {
-    // 既存の設定をクリアしてから新しい設定を開始
+    // Clear existing settings before starting new setup
     chrome.storage.sync.remove(['defaultTabName', 'defaultListName', 'defaultListUrl'], () => {
-      // 設定モードを有効化
+      // Enable setting mode
       chrome.storage.sync.set({ isSettingMode: true }, () => {
         showStatus('settingModeEnabled');
-        displayCurrentSetting(); // 表示を更新
+        displayCurrentSetting(); // Update display
         
-        // X (Twitter) の新しいタブを開く
+        // Open X (Twitter) in new tab
         chrome.tabs.create({ url: 'https://x.com/home' }, (tab) => {
-          // 5分後に自動的に設定モードを無効化
+          // Automatically disable setting mode after 5 minutes
           setTimeout(() => {
             chrome.storage.sync.set({ isSettingMode: false });
           }, 300000);
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 設定クリアボタンのクリックイベント
+  // Clear settings button click event
   document.getElementById('clearSetting').addEventListener('click', () => {
     const confirmMessage = getMessage('clearConfirm') || '現在の設定をクリアしますか？';
     if (confirm(confirmMessage)) {
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// storage の変更を監視
+// Monitor storage changes
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (namespace === 'sync') {
     if (changes.defaultTabName || changes.defaultListName || changes.defaultListUrl) {
