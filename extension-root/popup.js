@@ -9,22 +9,41 @@ document.addEventListener('DOMContentLoaded', () => {
       // 旧バージョンとの互換性
       currentListElement.textContent = data.defaultListName;
     } else {
-      // i18nが初期化されているか確認
-      if (window.i18n && window.i18n.getMessage) {
-        currentListElement.textContent = i18n.getMessage('notSet');
-      } else {
-        currentListElement.textContent = chrome.i18n.getMessage('notSet') || '未設定';
-      }
+      // Chrome i18n APIを直接使用
+      const notSetText = chrome.i18n.getMessage('notSet') || '未設定';
+      currentListElement.textContent = notSetText;
     }
   });
 
   // 設定ページを開く
-  document.getElementById('openOptions').addEventListener('click', () => {
-    chrome.runtime.openOptionsPage();
-  });
+  const openOptionsBtn = document.getElementById('openOptions');
+  if (openOptionsBtn) {
+    openOptionsBtn.addEventListener('click', () => {
+      chrome.runtime.openOptionsPage();
+    });
+  }
 
   // Xを新しいタブで開く
-  document.getElementById('openX').addEventListener('click', () => {
-    chrome.tabs.create({ url: 'https://x.com/home' });
+  const openXBtn = document.getElementById('openX');
+  if (openXBtn) {
+    openXBtn.addEventListener('click', () => {
+      chrome.tabs.create({ url: 'https://x.com/home' });
+    });
+  }
+  
+  // data-i18n属性を持つ要素のテキストを更新
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const messageKey = element.getAttribute('data-i18n');
+    const message = chrome.i18n.getMessage(messageKey);
+    if (message) {
+      if (element.tagName === 'INPUT' || element.tagName === 'BUTTON') {
+        element.value = message;
+      } else {
+        // currentListは特別扱い（データが読み込まれるまで維持）
+        if (element.id !== 'currentList') {
+          element.textContent = message;
+        }
+      }
+    }
   });
 });
