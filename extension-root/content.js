@@ -17,11 +17,26 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     if (isSettingMode) {
       console.log('Setting mode enabled');
       showSettingModeIndicator();
+      // Re-enable all tabs for selection
+      enableAllTabs();
     } else {
       hideSettingModeIndicator();
+      // Re-apply grayout when leaving setting mode
+      setTimeout(autoClickDefaultTab, 500);
     }
   }
 });
+
+// Enable all tabs for clicking (used in setting mode)
+function enableAllTabs() {
+  const tabs = document.querySelectorAll('[role="tablist"][data-testid="ScrollSnap-List"] a[role="tab"]');
+  tabs.forEach(tab => {
+    tab.style.opacity = '1';
+    tab.style.filter = 'none';
+    tab.style.pointerEvents = 'auto';
+    tab.style.cursor = 'pointer';
+  });
+}
 
 // Show setting mode indicator
 function showSettingModeIndicator() {
@@ -93,12 +108,18 @@ document.addEventListener('click', (event) => {
   }
 }, true);
 
-// Auto-click the configured tab on page load
+// Auto-click the configured tab on page load and gray out others
 function autoClickDefaultTab() {
-  chrome.storage.sync.get(['defaultTabName'], (data) => {
+  chrome.storage.sync.get(['defaultTabName', 'isSettingMode'], (data) => {
     const tabName = data.defaultTabName;
+    const settingMode = data.isSettingMode || false;
     
-    console.log('Auto-click check for tab:', tabName);
+    console.log('Auto-click check for tab:', tabName, 'Setting mode:', settingMode);
+    
+    // Don't apply grayout if in setting mode
+    if (settingMode) {
+      return;
+    }
     
     if (tabName) {
       // Find tab list
@@ -106,16 +127,118 @@ function autoClickDefaultTab() {
       if (tabList) {
         // Get all tabs
         const tabs = tabList.querySelectorAll('a[role="tab"]');
+        let foundTab = false;
         
-        // Find and click the configured tab
+        // Find and click the configured tab, gray out others
         for (const tab of tabs) {
           const tabTextElement = tab.querySelector('span');
-          if (tabTextElement && tabTextElement.textContent.trim() === tabName) {
-            console.log(`Clicking tab: ${tabName}`);
-            tab.click();
-            break;
+          if (tabTextElement) {
+            const currentTabName = tabTextElement.textContent.trim();
+            
+            if (currentTabName === tabName) {
+              console.log(`Clicking tab: ${tabName}`);
+              tab.click();
+              foundTab = true;
+              // Ensure selected tab is not grayed out
+              tab.style.opacity = '1';
+              tab.style.filter = 'none';
+              tab.style.pointerEvents = 'auto';
+              tab.style.cursor = 'pointer';
+            } else {
+              // Gray out and disable all other tabs including "For you" and "Following"
+              tab.style.opacity = '0.5';
+              tab.style.filter = 'grayscale(100%)';
+              tab.style.transition = 'opacity 0.3s, filter 0.3s';
+              tab.style.pointerEvents = 'none';
+              tab.style.cursor = 'not-allowed';
+            }
           }
         }
+        
+        if (foundTab) {
+          // Add styles to maintain gray state even on hover
+          addGrayOutStyles();
+        }
+      }
+    }
+  });
+}
+
+// Add CSS to maintain gray out state
+function addGrayOutStyles() {
+  chrome.storage.sync.get(['defaultTabName', 'isSettingMode'], (data) => {
+    const tabName = data.defaultTabName;
+    const settingMode = data.isSettingMode || false;
+    
+    if (!document.getElementById('lessaddicted-grayout-styles')) {
+      const style = document.createElement('style');
+      style.id = 'lessaddicted-grayout-styles';
+      style.textContent = `
+        /* Gray out all custom list tabs by default */
+        [role="tablist"][data-testid="ScrollSnap-List"] a[role="tab"] {
+          transition: opacity 0.3s, filter 0.3s;
+        }
+        
+        /* Keep the selected custom list visible */
+        [role="tablist"][data-testid="ScrollSnap-List"] a[role="tab"][aria-selected="true"] {
+          opacity: 1 !important;
+          filter: none !important;
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // Apply gray out to non-selected custom lists dynamically
+      const observer = new MutationObserver(() => {
+        // Re-check setting mode on each mutation
+        chrome.storage.sync.get(['isSettingMode'], (modeData) => {
+          const currentSettingMode = modeData.isSettingMode || false;
+          
+          const tabs = document.querySelectorAll('[role="tablist"][data-testid="ScrollSnap-List"] a[role="tab"]');
+          tabs.forEach(tab => {
+            const tabTextElement = tab.querySelector('span');
+            if (tabTextElement) {
+              const currentTabName = tabTextElement.textContent.trim();
+              const isSelected = tab.getAttribute('aria-selected') === 'true';
+              
+              // If in setting mode, make all tabs clickable
+              if (currentSettingMode) {
+                tab.style.opacity = '1';
+                tab.style.filter = 'none';
+                tab.style.pointerEvents = 'auto';
+                tab.style.cursor = 'pointer';
+              } else {
+                // Apply gray out to all tabs except the selected one
+                if (currentTabName === tabName && isSelected) {
+                  // Ensure selected tab is fully visible and clickable
+                  tab.style.opacity = '1';
+                  tab.style.filter = 'none';
+                  tab.style.pointerEvents = 'auto';
+                  tab.style.cursor = 'pointer';
+                } else if (currentTabName === tabName && !isSelected) {
+                  // Keep default tab slightly visible but disabled until selected
+                  tab.style.opacity = '0.8';
+                  tab.style.filter = 'grayscale(50%)';
+                  tab.style.pointerEvents = 'none';
+                  tab.style.cursor = 'not-allowed';
+                } else {
+                  // Gray out and disable all other tabs including "For you" and "Following"
+                  tab.style.opacity = '0.5';
+                  tab.style.filter = 'grayscale(100%)';
+                  tab.style.pointerEvents = 'none';
+                  tab.style.cursor = 'not-allowed';
+                }
+              }
+            }
+          });
+        });
+      });
+      
+      // Observe tab list for changes
+      const tabList = document.querySelector('[role="tablist"][data-testid="ScrollSnap-List"]');
+      if (tabList) {
+        observer.observe(tabList, { attributes: true, subtree: true, attributeFilter: ['aria-selected'] });
+        // Initial application
+        observer.takeRecords();
       }
     }
   });
